@@ -21,7 +21,11 @@ function buildMetadata(sample) {
     if (filteredArray.length > 0) {
       let result = filteredArray[0];
       Object.entries(result).forEach(([key, value]) => {
-        demopanel.append("h5").text(`${key}: ${value}`);
+
+        
+      let capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
+        demopanel.append("h5").text(`${capitalizedKey}: ${value}`);
+
       });
     }
   });
@@ -78,6 +82,10 @@ function buildCharts(sample) {
     // For the Bar Chart, map the otu_ids to a list of strings for your yticks
     let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
 
+// Calculate the maximum sample value for the x-axis range
+  let maxSampleValue = Math.max(...sample_values.slice(0, 10));
+
+
     // Build a Bar Chart
     // Don't forget to slice and reverse the input data appropriately
     let barData = [{
@@ -90,21 +98,21 @@ function buildCharts(sample) {
 
     let barLayout = {
       title: 'Top 10 Bacteria Cultures Found',
-      xaxis: { title: 'Number of Bacteria' },
-      margin: { t: 30, l: 150 }
+      xaxis: { title: 'Number of Bacteria',
+      range: [0, maxSampleValue + 10] // Set the range with some padding
+      },
     };
     // Render the Bar Chart
     Plotly.newPlot('bar', barData, barLayout);
 });
 }
 
-
 // Function to run on page load
 function init() {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
 
     // Get the names field
-    window.alert("Function Init Started");
+    //window.alert("Function Init Started");
     let names = data.names;
     console.log(names);
 
@@ -124,7 +132,6 @@ function init() {
 
     // Get the first sample from the list
     let firstsample = names[0];
-    window.alert(firstsample);
 
     // Build charts and metadata panel with the first sample
     buildMetadata(firstsample)
