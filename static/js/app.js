@@ -4,27 +4,26 @@ function buildMetadata(sample) {
 
     // get the metadata field
     let metadata = data.metadata;
-    console.log(metadata);
+   
 
     // Filter the metadata for the object with the desired sample number
-    let filteredArray = metadata.filter(item => item.id == sample);
-    console.log(filteredArray);
+    let desired_sample = metadata.filter(item => item.id == sample);
 
     // Use d3 to select the panel with id of `#sample-metadata`
-    let demopanel = d3.select("#sample-metadata");
+    let desired_panel = d3.select("#sample-metadata");
 
     // Use `.html("") to clear any existing metadata
-    demopanel.html("");
+    desired_panel.html("");
 
     // Inside a loop, you will need to use d3 to append new
     // tags for each key-value in the filtered metadata.
-    if (filteredArray.length > 0) {
-      let result = filteredArray[0];
+    if (desired_sample.length > 0) {
+      let result = desired_sample[0];
       Object.entries(result).forEach(([key, value]) => {
 
         
       let capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
-        demopanel.append("h5").text(`${capitalizedKey}: ${value}`);
+      desired_panel.append("h5").text(`${capitalizedKey}: ${value}`);
 
       });
     }
@@ -37,22 +36,16 @@ function buildCharts(sample) {
 
     // Get the samples field
     let samples = data.samples;
-    console.log(samples);
 
     // Filter the samples for the object with the desired sample number
     let filteredSample = samples.filter(item => item.id == sample);
-    console.log(filteredSample);
 
     // Get the otu_ids, otu_labels, and sample_values
     let otu_ids = filteredSample[0].otu_ids;
-    console.log(otu_ids);
 
     let otu_labels = filteredSample[0].otu_labels;
-    console.log(otu_labels);
 
     let sample_values = filteredSample[0].sample_values;
-    console.log(sample_values);
-
 
     // Build a Bubble Chart
     let bubbleData = [{
@@ -67,14 +60,13 @@ function buildCharts(sample) {
       }
     }];
 
-   
     let bubbleLayout = {
       title: 'Bacteria Cultures Per Sample',
       margin: { t: 0 },
       hovermode: 'closest',
       xaxis: { title: 'OTU ID' },
       yaxis: { title: 'Number of Bacteria' },
-      margin: { t: 30}
+      margin: { t: 40}
     };
      // Render the Bubble Chart
     Plotly.newPlot('bubble', bubbleData, bubbleLayout);
@@ -84,7 +76,6 @@ function buildCharts(sample) {
 
 // Calculate the maximum sample value for the x-axis range
   let maxSampleValue = Math.max(...sample_values.slice(0, 10));
-
 
     // Build a Bar Chart
     // Don't forget to slice and reverse the input data appropriately
@@ -99,8 +90,10 @@ function buildCharts(sample) {
     let barLayout = {
       title: 'Top 10 Bacteria Cultures Found',
       xaxis: { title: 'Number of Bacteria',
-      range: [0, maxSampleValue + 10] // Set the range with some padding
+    // Set the range with some padding
+      range: [0, maxSampleValue + 10] 
       },
+      margin: { t: 40, l:150}
     };
     // Render the Bar Chart
     Plotly.newPlot('bar', barData, barLayout);
@@ -127,7 +120,7 @@ function init() {
     // Append a new option to the dropdown
       dropdownMenu.append("option")
         .attr("value", value)  // Set the value attribute
-        .text(value);          // Set the text content
+        .text(value);          // Set the text content 
     });
 
     // Get the first sample from the list
