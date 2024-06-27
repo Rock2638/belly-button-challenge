@@ -1,6 +1,6 @@
 # belly-button-challenge
 
-## The link to the deployment is: https://rock2638.github.io/belly-button-challenge/
+### The link to the deployment is: https://rock2638.github.io/belly-button-challenge/
 
 ### Background
 In this challenge, an interactive dashboard is built to explore the Belly Button Biodiversity dataset, which catalogues the microbes that colonise human navels.
