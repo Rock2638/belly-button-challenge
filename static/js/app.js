@@ -5,7 +5,6 @@ function buildMetadata(sample) {
     // get the metadata field
     let metadata = data.metadata;
    
-
     // Filter the metadata for the object with the desired sample number
     let desired_sample = metadata.filter(item => item.id == sample);
 
@@ -21,7 +20,7 @@ function buildMetadata(sample) {
       let result = desired_sample[0];
       Object.entries(result).forEach(([key, value]) => {
 
-        
+    // capitalised the first letter
       let capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
       desired_panel.append("h5").text(`${capitalizedKey}: ${value}`);
 
@@ -74,11 +73,11 @@ function buildCharts(sample) {
     // For the Bar Chart, map the otu_ids to a list of strings for your yticks
     let yticks = otu_ids.slice(0, 10).map(otuID => `OTU ${otuID}`).reverse();
 
-// Calculate the maximum sample value for the x-axis range
+    // Calculate the maximum sample value for the x-axis range
   let maxSampleValue = Math.max(...sample_values.slice(0, 10));
 
     // Build a Bar Chart
-    // Don't forget to slice and reverse the input data appropriately
+    // Slice and reverse the input data appropriately
     let barData = [{
       y: yticks,
       x: sample_values.slice(0, 10).reverse(),
@@ -105,9 +104,7 @@ function init() {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
 
     // Get the names field
-    //window.alert("Function Init Started");
     let names = data.names;
-    console.log(names);
 
     // Use d3 to select the dropdown with id of `#selDataset`
     let dropdownMenu = d3.select("#selDataset");
